@@ -1,0 +1,31 @@
+syntax = "proto2";
+package fs_walker_svc;
+
+service FsWalker {
+    rpc FindFirst(FindFirstRequest) returns (stream FindResponse);
+}
+
+message FindFirstRequest
+{
+    required string rootdir = 1;
+}
+
+message FsItem
+{
+    required string name = 1;
+    oneof attr {
+        uint32 dir_id = 2;
+        uint64 file_size = 3;
+    }
+}
+
+message FsDirContents
+{
+    required uint32 parent_id = 1;
+    repeated FsItem items = 2;
+}
+
+message FindResponse
+{
+    repeated FsDirContents fs_items = 1;
+}
